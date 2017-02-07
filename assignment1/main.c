@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Process
+struct Process
 {
 	char name[10];
 	int arrival;
 	int burst;
 	int wait;
 	int turnaround;
-}Process;
+};
 
-void printProcesses(Process *processes, int processCnt);
-void fcfs(Process *processes, int processCnt, int runFor);
-void sjf(Process *processes, int processCnt, int runFor);
-void orderByArrival(Process *processes, int processCnt);
+void printProcesses(struct Process *processes, int processCnt);
+void fcfs(struct Process *processes, int processCnt, int runFor);
+void orderByArrival(struct Process *processes, int processCnt);
 
 int main(){
 
@@ -29,7 +28,7 @@ int main(){
 		fscanf(file, "%s", word);
 		fscanf(file, "%d", &processCnt);
 
-		Process processes[processCnt];
+		struct Process processes[processCnt];
 
 		//skips comments
 		fgets(line, sizeof(line), file);
@@ -76,7 +75,7 @@ int main(){
 	
 }
 
-void printProcesses(Process *processes, int processCnt){
+void printProcesses(struct Process *processes, int processCnt){
 	int i = 0;
 	for(i = 0; i < processCnt; i++){
 		printf("Process %s\n", processes[i].name);
@@ -85,7 +84,7 @@ void printProcesses(Process *processes, int processCnt){
 	}
 }
 
-void fcfs(Process *processes, int processCnt, int runFor){
+void fcfs(struct Process *processes, int processCnt, int runFor){
 	int i, selectedTime = 0, completionTime = 0, waitTime = 0, turnaroundTime = 0;
 
 	printf("%d processes\n", processCnt);
@@ -122,49 +121,19 @@ void fcfs(Process *processes, int processCnt, int runFor){
 
 }
 
-void sjf(Process *processes, int processCnt, int runFor){
-	int time, cnt;
-	Process ready_queue[processCnt];
-
-	for(time = 0; time < runFor; time++){
-		
-	}
-}
-
-void orderByArrival(Process *processes, int processCnt){
+void orderByArrival(struct Process *processes, int processCnt){
 	int i, j;
 
 	for(i = 0; i < processCnt - 1; i++)
 		for(j = 0; j < processCnt - i - 1; j++){
-			if(processes[j].arrival > processes[j+1].arrival){
-				Process temp = processes[j];
+			int arrival1 = processes[j].arrival;
+			int arrival2 = processes[j+1].arrival;
+
+			if(arrival1 > arrival2){
+				struct Process temp = processes[j];
 				processes[j] = processes[j+1];
 				processes[j+1] = temp;
 			}
 		}
 }
 
-void orderByBurst(Process *processes, int processCnt){
-	int i, j;
-
-	for(i = 0; i < processCnt - 1; i++){
-		for(j = 0; j < processCnt - i - 1; j++){
-			if(processes[j].burst > processes[j+1].burst){
-				Process temp = processes[j];
-				processes[j] = processes[j+1];
-				processes[j+1] = temp;
-			}
-		}
-	}
-}
-
-// void isReady(Process *processes, Process *ready_queue, int scheduleTime, int processCnt){
-// 	int cnt;
-	
-// 	for(cnt = 0; cnt < processCnt; cnt++){
-// 		if(processes[cnt].arrival <= scheduleTime){
-// 			ready_queue[cnt].arrival = processes[cnt].arrival;
-// 			ready_queue[cnt].burst = processes[cnt].burst;
-// 		}
-// 	}
-// }
